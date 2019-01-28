@@ -88,12 +88,12 @@ Click OK. A new window should open. IntelliJ needs you to specify a place for it
 
 # Assignment Checklist
 
-- [ ] I've filled out [this](https://docs.google.com/forms/d/e/1FAIpQLSfNHz1iT64AsXtsn9uTkECSrktoqjLE9tPuC5p5IeRgb3wWaQ/viewform?usp=sf_link) Google form to provide input and learning goals (also linked at the top of this README)
-- [ ] Git is installed.
-- [ ] I've forked the DSA-19 repository using [these](./GitSetup.md) instructions
-- [ ] I've added the DSA-19 repository as an upstream remote
-- [ ] IntelliJ is installed and I've run `HelloWorld.java`
-- [ ] **Optional** I've familiarized myself with the debugger.
+- [X] I've filled out [this](https://docs.google.com/forms/d/e/1FAIpQLSfNHz1iT64AsXtsn9uTkECSrktoqjLE9tPuC5p5IeRgb3wWaQ/viewform?usp=sf_link) Google form to provide input and learning goals (also linked at the top of this README)
+- [X] Git is installed.
+- [X] I've forked the DSA-19 repository using [these](./GitSetup.md) instructions
+- [X] I've added the DSA-19 repository as an upstream remote
+- [X] IntelliJ is installed and I've run `HelloWorld.java`
+- [X] **Optional** I've familiarized myself with the debugger.
 - [ ] **Optional** I've completed 10 levels of the [Git tutorial](http://learngitbranching.js.org/)
-- [ ] I've joined [the DSA channel](https://olin.slack.com/messages/dsa-19) `#dsa-19` on Slack.
-- [ ] I've filled out [this](https://docs.google.com/forms/d/e/1FAIpQLSeCqQlQbDWQcAGIcgvcJwXU6TzqCo7rUNqajY5OX8iQ_djlXQ/viewform?usp=sf_link)
+- [X] I've joined [the DSA channel](https://olin.slack.com/messages/dsa-19) `#dsa-19` on Slack.
+- [X] I've filled out [this](https://docs.google.com/forms/d/e/1FAIpQLSeCqQlQbDWQcAGIcgvcJwXU6TzqCo7rUNqajY5OX8iQ_djlXQ/viewform?usp=sf_link)

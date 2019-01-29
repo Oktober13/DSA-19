@@ -2,19 +2,24 @@ public class MyArrayList {
     private Cow[] elems;
     private int size;
 
-    // TODO: Runtime: O(?)
+    // TODO: Runtime: O(N)
     public MyArrayList() {
-        // TODO
+        elems = new Cow[]{};
     }
 
-    // TODO: Runtime: O(?)
+    // TODO: Runtime: O(N)
     public MyArrayList(int capacity) {
-        // TODO
+        elems = new Cow[capacity];
     }
 
     // TODO: Runtime: O(?)
     public void add(Cow c) {
-        // TODO
+        for(int iter = 0; iter < elems.length; iter++){
+            if(elems[iter] == null){
+                elems[iter] = c;
+                break;
+            }
+        }
     }
 
     // TODO: Runtime: O(?)
@@ -38,5 +43,9 @@ public class MyArrayList {
     // TODO: Runtime: O(?)
     public void add(int index, Cow c) {
         // TODO
+    }
+
+    public static void main(){
+        System.out.println("Hello World!");
     }
 }

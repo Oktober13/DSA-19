@@ -16,14 +16,10 @@ public class MyQueue<T> implements QueueADT<T> {
     }
 
     @Override
-    public void enqueue(T item) {
-        ll.add(item);
-    }
+    public void enqueue(T item) { ll.add(item); }
 
     @Override
-    public T dequeue() {
-        return ll.removeFirst();
-    }
+    public T dequeue() { return ll.removeFirst(); }
 
     @Override
     public boolean isEmpty() {

@@ -32,6 +32,7 @@ public class QueueTest {
     /**
      * Tests functionality of a queue
      */
+//    @Test
     public void testQueue(QueueADT<Integer> queue) {
         int e = queue.dequeue();
         assertEquals(e, 1);

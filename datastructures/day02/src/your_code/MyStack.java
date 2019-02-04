@@ -35,8 +35,24 @@ public class MyStack implements StackADT<Integer> {
         return ll.getFirst();
     }
 
-    public Integer maxElement() {
-        // TODO
-        return 0;
+    public Integer maxElement() { // Returns the largest element currently on the stack
+        if (ll.peek() != null) {
+            int maxnum;
+            LinkedList<Integer> stack = new LinkedList<>();
+
+            maxnum = ll.peek();
+
+            while (ll.peek() != null) { // While stack is not empty
+                Integer pop = ll.pop();
+                stack.add(pop); // Keep track of removed items
+                if (pop > maxnum) {
+                    maxnum = pop;
+                }
+            }
+            ll = stack;
+            return maxnum;
+        } else {
+            return null;
+        }
     }
 }

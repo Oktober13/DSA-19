@@ -9,7 +9,7 @@ public class MergeSort extends SortAlgorithm {
      * Use Insertion Sort if the length of the array is <= INSERTION_THRESHOLD
      *
      * Best-case runtime: O(N) each branch, so O(NlogN) tptal.
-     * Worst-case runtime: O(N)
+     * Worst-case runtime: O(NlogN)
      * Average-case runtime: O(NlogN)
      *
      * Space-complexity: O(N)

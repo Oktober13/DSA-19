@@ -58,11 +58,11 @@ public class HeapSort extends SortAlgorithm {
     }
 
     /**
-     * Best-case runtime:
-     * Worst-case runtime:
-     * Average-case runtime:
+     * Best-case runtime: O(NlogN)
+     * Worst-case runtime: O(NlogN)
+     * Average-case runtime: O(NlogN)
      *
-     * Space-complexity:
+     * Space-complexity: O(N)
      */
     @Override
     public int[] sort(int[] array) {

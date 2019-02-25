@@ -1,6 +1,8 @@
+package day01;
+
 import java.util.concurrent.ThreadLocalRandom;
 
-public class QuickSort extends SortAlgorithm {
+public class QuickSort extends day01.SortAlgorithm {
 
     private static final int INSERTION_THRESHOLD = 10;
     private void shuffleArray(int[] array) {

@@ -1,3 +1,6 @@
+package day01;
+
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -6,8 +9,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SortTest {
     private int[] emptyCase;
@@ -37,7 +38,7 @@ public class SortTest {
         return random;
     }
 
-    private void testSort(SortAlgorithm sorter) {
+    private void testSort(day01.SortAlgorithm sorter) {
         assertArrayEquals(sorter.sort(emptyCase), emptyCase);
         assertArrayEquals(sorter.sort(oneCase), sort(oneCase));
         assertArrayEquals(sorter.sort(twoCase), sort(twoCase));
@@ -60,11 +61,11 @@ public class SortTest {
         a = new int[] {8, 3, 4, 6, 7, 2, 1, 2};
         int[] a_sorted = sort(a);
         quickSort.quickSort(a, 0, a.length-1);
-        assertArrayEquals(a, a_sorted);
+        Assertions.assertArrayEquals(a, a_sorted);
 
         a = new int[] {8, 3, 4, 6, 7, 2, 1, 2};
         quickSort.quickSort(a, 1, a.length-2);
-        assertArrayEquals(a, new int[] {8, 1, 2, 3, 4, 6, 7, 2});
+        Assertions.assertArrayEquals(a, new int[] {8, 1, 2, 3, 4, 6, 7, 2});
 
         // Quicksort the middle of a an array
         a = generateRandomArrayOfSize(984);
@@ -88,7 +89,7 @@ public class SortTest {
         int[] in = inputAL.stream().mapToInt(i -> i).toArray();
         int[] out = outputAL.stream().mapToInt(i -> i).toArray();
         quickSort.quickSort(in, a.length, a.length+b.length-1);
-        assertArrayEquals(in, out);
+        Assertions.assertArrayEquals(in, out);
 
     }
 
@@ -101,17 +102,17 @@ public class SortTest {
 
         a = new int[] {5,6,8,3,1,10,2,5};
         finalIndex = quickSort.partition(a, 0, 7);
-        assertEquals(3, finalIndex);
-        assertTrue(a[finalIndex] == 5);
-        for (int i = 0; i < finalIndex; i++) assertTrue(a[i] < a[finalIndex]);
-        for (int i = finalIndex; i < a.length; i++) assertTrue(a[i] >= a[finalIndex]);
+        Assertions.assertEquals(3, finalIndex);
+        Assertions.assertTrue(a[finalIndex] == 5);
+        for (int i = 0; i < finalIndex; i++) Assertions.assertTrue(a[i] < a[finalIndex]);
+        for (int i = finalIndex; i < a.length; i++) Assertions.assertTrue(a[i] >= a[finalIndex]);
 
         a = new int[] {5,6,8,3,1,10,2,5};
         finalIndex = quickSort.partition(a, 2, 6);
-        assertEquals(5, finalIndex);
-        assertTrue(a[finalIndex] == 8);
-        for (int i = 2; i < finalIndex; i++) assertTrue(a[i] < a[finalIndex]);
-        for (int i = finalIndex; i <= 6; i++) assertTrue(a[i] >= a[finalIndex]);
+        Assertions.assertEquals(5, finalIndex);
+        Assertions.assertTrue(a[finalIndex] == 8);
+        for (int i = 2; i < finalIndex; i++) Assertions.assertTrue(a[i] < a[finalIndex]);
+        for (int i = finalIndex; i <= 6; i++) Assertions.assertTrue(a[i] >= a[finalIndex]);
     }
 
     @Test

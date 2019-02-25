@@ -1,14 +1,14 @@
+package day01;
+
+import day01.Problems;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-
-public class HeapSortTest {
+public class ProblemsTest {
     private int[] emptyCase;
     private int[] oneCase;
     private int[] twoCase;
@@ -16,7 +16,6 @@ public class HeapSortTest {
     private int[] eightCase;
     private int[] nineCase;
     private int[] longCase;
-
 
     @BeforeEach
     public void setup() {
@@ -30,56 +29,15 @@ public class HeapSortTest {
     }
 
     @Test
-    public void testHeapify() {
-        HeapSort hs = new HeapSort();
-        int[] in = new int[]{8, 2, 9, 1, 5, 6, 3, 1, 2};
-        int[] heap = new int[]{9, 5, 8, 2, 2, 6, 3, 1, 1};
-        hs.heapify(in);
-        assertArrayEquals(in, heap);
-        in = new int[]{1, 3, 2, 5, 1, 2, 7, 9};
-        heap = new int[]{9, 5, 7, 3, 1, 2, 2, 1};
-        hs.heapify(in);
-        assertArrayEquals(in, heap);
+    public void testRunningMedianRandom() {
+        assertTrue(Arrays.equals(Problems.runningMedian(emptyCase), Problems.runningMedianReallySlow(emptyCase)));
+        assertTrue(Arrays.equals(Problems.runningMedian(oneCase), Problems.runningMedianReallySlow(oneCase)));
+        assertTrue(Arrays.equals(Problems.runningMedian(twoCase), Problems.runningMedianReallySlow(twoCase)));
+        assertTrue(Arrays.equals(Problems.runningMedian(twoCase), Problems.runningMedianReallySlow(twoCase)));
+        assertTrue(Arrays.equals(Problems.runningMedian(threeCase), Problems.runningMedianReallySlow(threeCase)));
+        assertTrue(Arrays.equals(Problems.runningMedian(eightCase), Problems.runningMedianReallySlow(eightCase)));
+        assertTrue(Arrays.equals(Problems.runningMedian(nineCase), Problems.runningMedianReallySlow(nineCase)));
+        assertTrue(Arrays.equals(Problems.runningMedian(twoCase), Problems.runningMedianReallySlow(twoCase)));
+        assertTrue(Arrays.equals(Problems.runningMedian(longCase), Problems.runningMedianReallySlow(longCase)));
     }
-
-    @Test
-    public void testSink() {
-        HeapSort hs = new HeapSort();
-        int[] in = new int[]{4, 2, 9, 1, 5, 6, 3, 1, 2};
-        hs.heap = in;
-        hs.size = in.length;
-        hs.sink(5);
-        hs.sink(7);
-        hs.sink(8);
-        int[] out = new int[]{4, 2, 9, 1, 5, 6, 3, 1, 2};
-        assertArrayEquals(in, out);
-        hs.sink(3);
-        hs.sink(0);
-        out = new int[]{9, 2, 6, 2, 5, 4, 3, 1, 1};
-        assertArrayEquals(in, out);
-    }
-
-    private void testSort(SortAlgorithm sorter) {
-        assertArrayEquals(sorter.sort(emptyCase), sort(emptyCase));
-        assertArrayEquals(sorter.sort(oneCase), sort(oneCase));
-        assertArrayEquals(sorter.sort(twoCase), sort(twoCase));
-        assertArrayEquals(sorter.sort(twoCase), sort(twoCase));
-        assertArrayEquals(sorter.sort(threeCase), sort(threeCase));
-        assertArrayEquals(sorter.sort(eightCase), sort(eightCase));
-        assertArrayEquals(sorter.sort(nineCase), sort(nineCase));
-        assertArrayEquals(sorter.sort(twoCase), sort(twoCase));
-        assertArrayEquals(sorter.sort(longCase), sort(longCase));
-    }
-
-    private int[] sort(int[] array) {
-        int[] copy = Arrays.copyOf(array, array.length);
-        Arrays.sort(copy);
-        return copy;
-    }
-
-    @Test
-    public void testHeapSort() {
-        testSort(new HeapSort());
-    }
-
 }

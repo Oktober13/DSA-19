@@ -1,4 +1,6 @@
-public class HeapSort extends SortAlgorithm {
+package day01;
+
+public class HeapSort extends day01.SortAlgorithm {
     int size;
     int[] heap;
 

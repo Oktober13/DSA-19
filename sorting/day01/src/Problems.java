@@ -1,3 +1,5 @@
+package day01;
+
 import java.util.*;
 
 public class Problems {
@@ -20,7 +22,7 @@ public class Problems {
     // Runtime of this algorithm is O(N^2). Sad! We provide it here for testing purposes
     public static double[] runningMedianReallySlow(int[] A) {
         double[] out = new double[A.length];
-        List<Integer> seen = new ArrayList<>();
+        ArrayList<Integer> seen = new ArrayList<Integer>();
         for (int i = 0; i < A.length; i++) {
             int j = 0;
             while (j < seen.size() && seen.get(j) < A[i])
@@ -39,8 +41,8 @@ public class Problems {
      */
     public static double[] runningMedian(int[] inputStream) {
         double[] runningMedian = new double[inputStream.length];
-        PriorityQueue lesser = maxPQ();
-        PriorityQueue greater = minPQ();
+        PriorityQueue<Integer> lesser = maxPQ();
+        PriorityQueue<Integer> greater = minPQ();
 
         // Setup base cases
         if (inputStream.length == 1) {

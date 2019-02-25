@@ -1,3 +1,5 @@
+package day01;
+
 public abstract class SortAlgorithm {
 
     abstract int[] sort(int[] array);

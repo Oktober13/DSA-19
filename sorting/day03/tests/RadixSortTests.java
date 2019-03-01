@@ -34,7 +34,8 @@ public class RadixSortTests {
         int[] bases = new int[]{2, 3, 5, 10, 13, 17, 26};
         for (int m : max_values) {
             for (int b : bases) {
-                int[] A = generateRandomArrayOfSize(10000, 0, m);
+                int[] A = generateRandomArrayOfSize(11, 0, m);
+//                int[] A = generateRandomArrayOfSize(10000, 0, m);
                 int[] sorted = sort(A);
                 RadixSort.radixSort(A, b);
                 assertArrayEquals(A, sorted);

@@ -6,7 +6,7 @@ public class RadixSort {
      * @param n the digit number, 0 is least significant
      * @return
      */
-    private static int getNthDigit(int number, int base, int n) {
+    public static int getNthDigit(int number, int base, int n) {
         return number / ((int) Math.pow(base, n)) % base;
     }
 
@@ -19,14 +19,25 @@ public class RadixSort {
      */
     static void countingSortByDigit(int[] A, int b, int n) {
         LinkedList<Integer>[] L = new LinkedList[b];
-        for (int i = 0; i < b; i++)
+
+        int digit;
+
+        for (int i = 0; i < b; i++) {
             L[i] = new LinkedList<>();
-        for (int i : A) {
-            // TODO: Extract the relevant digit from i, and add i to the corresponding Linked List.
         }
+
+        for (int i : A) {
+            digit = getNthDigit(i, b, n);
+
+            L[digit].add(i);
+        }
+
         int j = 0; // index in A to place numbers
-        for (LinkedList<Integer> list : L) {
-            // TODO: Put all numbers in the linked lists into A
+        for (LinkedList list : L) {
+            while (list.size() != 0) {
+                A[j] = (int) list.pop();
+                j += 1;
+            }
         }
     }
 
@@ -41,10 +52,14 @@ public class RadixSort {
     static void radixSort(int[] A, int b) {
         // Calculate the upper-bound for numbers in A
         int k = A[0] + 1;
-        for (int i = 1; i < A.length; i++)
+        for (int i = 1; i < A.length; i++) {
             k = (A[i] + 1 > k) ? A[i] + 1 : k;
+        }
         int w = (int) Math.ceil(Math.log(k) / Math.log(b)); // w = log base b of k, word length of numbers
-        // TODO: Perform radix sort
+
+        for (int i = 0; i < w; i++) {
+            countingSortByDigit(A, b, i);
+        }
     }
 
 }

@@ -3,7 +3,7 @@ public class CountingSort {
     /**
      * Use counting sort to sort non-negative integer array A.
      * Runtime: O(N)
-     * 
+     *
      * k: maximum element in array A
      */
     public static void countingSort(int[] A) {

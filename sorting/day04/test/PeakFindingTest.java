@@ -34,7 +34,9 @@ public class PeakFindingTest {
         for (int i = 0; i < nums.length; i++) {
             nums[i] = i;
         }
-        isValidOneDSolution(nums, PeakFinding.findOneDPeak(nums));
+        int soln = PeakFinding.findOneDPeak(nums);
+        System.out.print(soln);
+        isValidOneDSolution(nums, soln);
     }
 
     @Test

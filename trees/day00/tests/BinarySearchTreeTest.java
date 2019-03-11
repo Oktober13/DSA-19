@@ -93,6 +93,7 @@ public class BinarySearchTreeTest {
         predTest(bsts[4], inputs[4]);
     }
 
+    @Test
     private void testSuccessor(BinarySearchTree<Integer> bst, Integer[] input) {
         Integer[] sorted = sorted(input);
         for (int j = 0; j < sorted.length; j++) {

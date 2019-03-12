@@ -34,7 +34,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
     public void inOrderTraversal(TreeNode<T> node, List<T> list) {
         if (node != null) {
             inOrderTraversal(node.leftChild, list);
-            list.add(node.key);
+            list.add(node.key);        boolean bool = false;
             inOrderTraversal(node.rightChild, list);
         }
     }

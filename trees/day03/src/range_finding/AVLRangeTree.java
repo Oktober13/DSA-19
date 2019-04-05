@@ -1,7 +1,6 @@
 package range_finding;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class AVLRangeTree extends BinarySearchTree<Integer> {
 
@@ -73,16 +72,67 @@ public class AVLRangeTree extends BinarySearchTree<Integer> {
     // Return all keys that are between [lo, hi] (inclusive).
     // TODO: runtime = O(?)
     public List<Integer> rangeIndex(int lo, int hi) {
-        // TODO
-        List<Integer> l = new LinkedList<>();
-        return l;
+        List<Integer> hikeys = new LinkedList<>();
+        List<Integer> lokeys = new LinkedList<>();
+
+        getKeys(hikeys, hi, root);
+        getKeys(lokeys, lo, root);
+        Set<Integer> ad = new HashSet<Integer>(hikeys);
+        Set<Integer> bc = new HashSet<Integer>(lokeys);
+
+        System.out.println("OwO");
+        System.out.println(lo);
+        System.out.println(hi);
+        System.out.println(this.inOrderTraversal());
+        System.out.println(hikeys.toString());
+        System.out.println(lokeys.toString());
+
+        bc.remove(lo);
+        ad.removeAll(bc);
+
+        System.out.println(ad.toString());
+        System.out.println(bc.toString());
+
+        ArrayList<Integer> result = new ArrayList<Integer>(ad);
+        Collections.sort(result);
+        return result;
+    }
+
+    public void getKeys(List<Integer> keys, int k, RangeNode node) {
+        if (node == null) {
+            return;
+        }
+
+        if (node.key.compareTo(k) <= 0) { // If num is larger than current node's key
+            keys.add((Integer) node.key);
+            getKeys(keys,k,node.leftChild);
+            getKeys(keys,k,node.rightChild);
+        } else { // If num is less than current nodes' key
+            getKeys(keys, k, node.leftChild);
+        }
     }
 
     // return the number of keys between [lo, hi], inclusive
     // TODO: runtime = O(?)
     public int rangeCount(int lo, int hi) {
-        // TODO
-        return 0;
+        int high = rank(root, hi + 1);
+        int low = rank(root, lo);
+        return high - low;
+    }
+
+    public int rank(RangeNode node, int k) { // returns the number of keys <= k
+        if (node == null) {
+            return -1;
+        }
+        int lessthan;
+
+        if (node.key.compareTo(k) < 0) { // If num is larger than current node's key
+            int subtree = (node.leftChild != null) ? node.leftChild.subNodes : 0;
+            lessthan = 1 + subtree + rank(node.rightChild, k);
+        } else { // If num is less than current nodes' key
+            lessthan = rank(node.leftChild, k);
+        }
+        return lessthan;
     }
 
     /**
@@ -105,6 +155,24 @@ public class AVLRangeTree extends BinarySearchTree<Integer> {
         y.rightChild = x;
         x.height = 1 + Math.max(height(x.leftChild), height(x.rightChild));
         y.height = 1 + Math.max(height(y.leftChild), height(y.rightChild));
+
+        if (y.leftChild == null) {
+            y.subNodes = y.rightChild.subNodes + 1;
+        } else {
+            y.subNodes = y.leftChild.subNodes + y.rightChild.subNodes + 1;
+        }
+
+        if ((x.leftChild == null) && (x.rightChild == null)){
+            x.subNodes = 1;
+        } else if (x.leftChild == null) {
+            x.subNodes = x.rightChild.subNodes + 1;
+        }
+        else if (x.rightChild == null) {
+            x.subNodes = x.leftChild.subNodes + 1;
+        } else {
+            x.subNodes = x.leftChild.subNodes + x.rightChild.subNodes + 1;
+        }
+
         return y;
     }
 
@@ -117,6 +185,22 @@ public class AVLRangeTree extends BinarySearchTree<Integer> {
         y.leftChild = x;
         x.height = 1 + Math.max(height(x.leftChild), height(x.rightChild));
         y.height = 1 + Math.max(height(y.leftChild), height(y.rightChild));
+
+        if (y.rightChild != null) {
+            y.subNodes = y.leftChild.subNodes + y.rightChild.subNodes + 1;
+        }
+
+        if ((x.leftChild == null) && (x.rightChild == null)){
+            x.subNodes = 1;
+        } else if (x.leftChild == null) {
+            x.subNodes = x.rightChild.subNodes + 1;
+        }
+        else if (x.rightChild == null) {
+            x.subNodes = x.leftChild.subNodes + 1;
+        } else {
+            x.subNodes = x.leftChild.subNodes + x.rightChild.subNodes + 1;
+        }
+
         return y;
     }
 }

@@ -68,6 +68,16 @@ public class BinarySearchTree<T extends Comparable<T>> {
                 n.leftChild = tmp.leftChild;
             }
         }
+
+        if ((n.leftChild == null) && (n.rightChild == null)){
+            n.subNodes = 1;
+        } else if (n.leftChild == null) {
+            n.subNodes = n.rightChild.subNodes + 1;
+        } else if (n.rightChild == null) {
+            n.subNodes = n.leftChild.subNodes + 1;
+        } else {
+            n.subNodes = n.leftChild.subNodes + n.rightChild.subNodes + 1;
+        }
         return n;
     }
 
@@ -112,6 +122,17 @@ public class BinarySearchTree<T extends Comparable<T>> {
             node.leftChild = insert(node.leftChild, key);
         } else {
             node.rightChild = insert(node.rightChild, key);
+        }
+
+
+        if ((node.leftChild == null) && (node.rightChild == null)){
+            node.subNodes = 1;
+        } else if (node.leftChild == null) {
+            node.subNodes = node.rightChild.subNodes + 1;
+        } else if (node.rightChild == null) {
+            node.subNodes = node.leftChild.subNodes + 1;
+        } else {
+            node.subNodes = node.leftChild.subNodes + node.rightChild.subNodes + 1;
         }
         return node;
     }

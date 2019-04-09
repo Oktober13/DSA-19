@@ -37,22 +37,66 @@ public class NQueens {
         return false;
     }
 
+    public static boolean check(char[][] board, int j, int i) {
+        int x = board[j].length - 1;
+        while (x >= 0) {
+            if (board[j][x] == 'Q') return false;
+            x--;
+
+        }
+        int y = board.length - 1;
+        while (y >= 0) {
+            if (board[y][i] == 'Q') return false;
+            y--;
+        }
+        if (checkDiagonal(board, j, i)) {
+            return false;
+        }
+        return true;
+    }
+
 
     /**
      * Creates a deep copy of the input array and returns it
      */
-    private static char[][] copyOf(char[][] A) {
+    private static char[][] copyOfQ(char[][] A) {
         char[][] B = new char[A.length][A[0].length];
-        for (int i = 0; i < A.length; i++)
-            System.arraycopy(A[i], 0, B[i], 0, A[0].length);
+        for (int i = 0; i < A.length; i++) {
+            for (int j = 0; j < B.length; j++) {
+                B[i][j] = A[i][j];
+            }
+//            System.arraycopy(A[i], 0, B[i], 0, A[0].length);
+        }
         return B;
     }
 
-
     public static List<char[][]> nQueensSolutions(int n) {
-        // TODO
+        char[][] empty = new char[n][n];
         List<char[][]> answers = new ArrayList<>();
+        for (int i = 0; i < n; i++ ) {
+            for (int j = 0; j < n; j++)
+            {
+                empty[i][j] = '.'; // value is your chosen integer for that index
+            }
+        }
+
+        NQueens.solve(answers, empty, 0);
         return answers;
     }
 
+    public static void solve(List<char[][]> p, char[][] mat, int col) {
+        if (col == (mat.length )) { // If lower range == higher range (all queens placed)
+            p.add(copyOfQ(mat));
+            return;
+        } else {
+            for (int row = 0; row < mat[0].length; row++) { // Iterate through range and place r-l queens
+                if (check(mat, col, row)) {
+                    mat[col][row] = 'Q'; // Place queen
+                    solve(p, mat, col + 1);
+                    mat[col][row] = '.'; // Place queen // Backtrack
+                }
+            }
+        }
+        return;
+    }
 }

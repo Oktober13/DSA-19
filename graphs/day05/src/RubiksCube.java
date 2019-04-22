@@ -1,12 +1,14 @@
+import java.lang.reflect.Array;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 
 // this is our implementation of a rubiks cube. It is your job to use A* or some other search algorithm to write a
 // solve() function
-public class RubiksCube {
+public class RubiksCube implements Comparable<RubiksCube> {
 
     private BitSet cube;
+    private ArrayList<Character> moves = new ArrayList<>();
 
     // initialize a solved rubiks cube
     public RubiksCube() {
@@ -26,6 +28,12 @@ public class RubiksCube {
 
     // creates a copy of the rubics cube
     public RubiksCube(RubiksCube r) {
+        cube = (BitSet) r.cube.clone();
+    }
+
+    public RubiksCube(RubiksCube r, ArrayList<Character> m, char c) {
+        moves = (ArrayList<Character>) m.clone();
+        moves.add(c);
         cube = (BitSet) r.cube.clone();
     }
 
@@ -187,11 +195,134 @@ public class RubiksCube {
         return listTurns;
     }
 
+//    public boolean solvable(RubiksCube c) {
+//        int inversion = 0;
+//        int[] flat = new int[20];
+//        for (int i = 0; i < flat.length; i++) {
+//            flat[i] = c.getColor(i);
+//        }
+//
+//        for (int i = 0; i < flat.length; i++) {
+//            for (int j = i+1; j < flat.length; j++) {
+//                if (flat[i] > flat[j]) {
+//                    inversion = inversion + 1;
+//                }
+//            }
+//        }
+//
+//        return ((inversion % 2) == 0);
+//    }
+
+    public int heuristic(RubiksCube c) {
+        int color = 0;
+        int sum = 0;
+
+        for (int i = 0; i < 24; i++) {
+            if ((i % 4 == 0) && (i > 1)) { // What color should this face be?
+                color += 1;
+            }
+            if (getColor(i) != color) { // If cubie color is not the color it should be
+                sum += 1;
+            }
+        }
+        sum = sum + c.moves.size();
+//        System.out.println(color);
+
+        return sum;
+    }
+
+    /**
+     * Gets the neighboring cubes of the current state, and adds clones of them to a returned PriorityQueue
+     **/
+    public PriorityQueue<RubiksCube> getNeighbors() {
+        char[] actions = new char[] {'u', 'U', 'r', 'R', 'f', 'F'};
+        PriorityQueue<RubiksCube> neighbors = new PriorityQueue<>();
+
+        for (char rot : actions) {
+            neighbors.add(new RubiksCube(rotate(rot), moves, rot)); // Adds to list of moves for that neighbor
+        }
+
+        return neighbors;
+    }
+
+//    private PriorityQueue<RubiksCube> pruneNeighbors(PriorityQueue<RubiksCube> n, HashSet<RubiksCube> v) {
+//        ArrayList<RubiksCube> toRemove = new ArrayList<>();
+//
+//        for (RubiksCube neighbor1 : n) {
+//            for (RubiksCube neighbor2 : n) {
+//                if (v.contains(neighbor1)) {
+//                    toRemove.add(neighbor1);
+//                }
+//                if (v.contains(neighbor2)) {
+//                    toRemove.add(neighbor2);
+//                }
+//                if ((neighbor1.equals(neighbor2)) && !(neighbor1 == neighbor2)) {
+//                    if (heuristic(neighbor1) >= heuristic(neighbor2)) {
+//                        toRemove.add(neighbor1);
+//                    } else {
+//                        toRemove.add(neighbor2);
+//                    }
+//                }
+//            }
+//        }
+//        n.removeAll(toRemove);
+//        return n;
+//    }
 
     // return the list of rotations needed to solve a rubik's cube
     public List<Character> solve() {
-        // TODO
-        return new ArrayList<>();
+        HashSet<RubiksCube> visited = new HashSet<>();
+        PriorityQueue<RubiksCube> neighbors = new PriorityQueue<>();
+
+        while (!isSolved()) {
+            neighbors.addAll(getNeighbors());
+            for (Iterator<RubiksCube> iterator = neighbors.iterator(); iterator.hasNext(); ) {
+                RubiksCube next = iterator.next();
+                if (visited.contains(next)) {
+                    iterator.remove();
+                }
+//                else {
+//                    System.out.println(next.moves);
+//                }
+//                System.out.println(next.cube.toString());
+            }
+//            n.addAll(neighbors); // Add all neighbors of currently chosen node
+//            n = pruneNeighbors(n, visited);
+//            System.out.println(heuristic(n.peek()));
+//            for (RubiksCube temp : n) {
+//                System.out.println(temp.moves.size());
+////                System.out.print("  ");
+//            }
+
+            if (neighbors.size() == 0) { // Explored all neighbor nodes
+                return null;
+            }
+
+            for (RubiksCube a : neighbors) {
+                System.out.print(a.moves);
+                System.out.println(heuristic(a));
+            }
+            RubiksCube choose = neighbors.poll();
+            visited.add(choose);
+            cube = choose.cube; // Get best fringe node
+            moves = choose.moves; // Get moves to that fringe node
+
+            System.out.println(" ");
+//            System.out.println(cube.toString());
+            System.out.println(moves);
+            System.out.println("New!");
+        }
+
+        return moves;
     }
 
+    public int compareTo(RubiksCube c) {
+        if (heuristic(this) > heuristic(c)) {
+            return 1;
+        } else if (heuristic(this) < heuristic(c)) {
+            return -1;
+        } else {
+            return 0;
+        }
+    }
 }

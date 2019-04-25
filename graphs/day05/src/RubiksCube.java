@@ -139,7 +139,7 @@ public class RubiksCube implements Comparable<RubiksCube> {
                 sidesTo = new int[]{8, 11, 14, 15, 23, 20, 3, 2};
                 break;
             default:
-                System.out.println(c);
+//                System.out.println(c);
                 assert false;
         }
         // if performing a counter-clockwise rotation, swap from and to
@@ -221,7 +221,7 @@ public class RubiksCube implements Comparable<RubiksCube> {
             if ((i % 4 == 0) && (i > 1)) { // What color should this face be?
                 color += 1;
             }
-            if (getColor(i) != color) { // If cubie color is not the color it should be
+            if (c.getColor(i) != color) { // If cubie color is not the color it should be
                 sum += 1;
             }
         }
@@ -245,30 +245,6 @@ public class RubiksCube implements Comparable<RubiksCube> {
         return neighbors;
     }
 
-//    private PriorityQueue<RubiksCube> pruneNeighbors(PriorityQueue<RubiksCube> n, HashSet<RubiksCube> v) {
-//        ArrayList<RubiksCube> toRemove = new ArrayList<>();
-//
-//        for (RubiksCube neighbor1 : n) {
-//            for (RubiksCube neighbor2 : n) {
-//                if (v.contains(neighbor1)) {
-//                    toRemove.add(neighbor1);
-//                }
-//                if (v.contains(neighbor2)) {
-//                    toRemove.add(neighbor2);
-//                }
-//                if ((neighbor1.equals(neighbor2)) && !(neighbor1 == neighbor2)) {
-//                    if (heuristic(neighbor1) >= heuristic(neighbor2)) {
-//                        toRemove.add(neighbor1);
-//                    } else {
-//                        toRemove.add(neighbor2);
-//                    }
-//                }
-//            }
-//        }
-//        n.removeAll(toRemove);
-//        return n;
-//    }
-
     // return the list of rotations needed to solve a rubik's cube
     public List<Character> solve() {
         HashSet<RubiksCube> visited = new HashSet<>();
@@ -281,38 +257,22 @@ public class RubiksCube implements Comparable<RubiksCube> {
                 if (visited.contains(next)) {
                     iterator.remove();
                 }
-//                else {
-//                    System.out.println(next.moves);
-//                }
-//                System.out.println(next.cube.toString());
             }
-//            n.addAll(neighbors); // Add all neighbors of currently chosen node
-//            n = pruneNeighbors(n, visited);
-//            System.out.println(heuristic(n.peek()));
-//            for (RubiksCube temp : n) {
-//                System.out.println(temp.moves.size());
-////                System.out.print("  ");
-//            }
 
             if (neighbors.size() == 0) { // Explored all neighbor nodes
                 return null;
-            }
-
-            for (RubiksCube a : neighbors) {
-                System.out.print(a.moves);
-                System.out.println(heuristic(a));
             }
             RubiksCube choose = neighbors.poll();
             visited.add(choose);
             cube = choose.cube; // Get best fringe node
             moves = choose.moves; // Get moves to that fringe node
-
-            System.out.println(" ");
-//            System.out.println(cube.toString());
-            System.out.println(moves);
-            System.out.println("New!");
         }
 
+        for (Character m : moves) {
+            System.out.print(m);
+            System.out.print(" ");
+        }
+        System.out.println("");
         return moves;
     }
 

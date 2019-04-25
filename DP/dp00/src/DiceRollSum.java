@@ -2,7 +2,7 @@ import java.util.HashMap;
 
 public class DiceRollSum {
     // Runtime: O(N) originally, but O(1) amortized
-    // Space: O(N)
+    // Space: O(N) 
     public static int diceRollSum(int N) {
         HashMap<Integer, Integer> seen = new HashMap<>() {{
             put(0, 0);

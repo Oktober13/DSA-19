@@ -1,4 +1,3 @@
-import java.lang.reflect.Array;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -223,9 +222,12 @@ public class RubiksCube implements Comparable<RubiksCube> {
             }
             if (c.getColor(i) != color) { // If cubie color is not the color it should be
                 sum += 1;
+//                if ((c.getColor(i) == (color + 2)) || ((c.getColor(i) + 2) == color)) {
+//                    sum += 1;
+//                }
             }
         }
-        sum = sum + c.moves.size();
+        sum = (sum / 8) + c.moves.size();
 //        System.out.println(color);
 
         return sum;
@@ -247,15 +249,39 @@ public class RubiksCube implements Comparable<RubiksCube> {
 
     // return the list of rotations needed to solve a rubik's cube
     public List<Character> solve() {
-        HashSet<RubiksCube> visited = new HashSet<>();
-        PriorityQueue<RubiksCube> neighbors = new PriorityQueue<>();
+//        Comparator<RubiksCube> comparator = new Comparator<RubiksCube>() {
+//            @Override
+//            public int compare(RubiksCube cube1, RubiksCube cube2) {
+//                if (heuristic(cube1) > heuristic(cube2)) {
+//                    return 1;
+//                } else if (heuristic(cube1) < heuristic(cube2)) {
+//                    return -1;
+//                } else {
+//                    return 0;
+//                }
+//            }
+//        };
+
+//        HashSet<RubiksCube> visited = new HashSet<>();
+        HashMap<RubiksCube, Integer> visited2 = new HashMap<>();
+
+        PriorityQueue<RubiksCube> neighbors = new PriorityQueue<>(new RubiksComparator());
+        visited2.put(this, heuristic(this));
 
         while (!isSolved()) {
-            neighbors.addAll(getNeighbors());
-            for (Iterator<RubiksCube> iterator = neighbors.iterator(); iterator.hasNext(); ) {
+            for (Iterator<RubiksCube> iterator = getNeighbors().iterator(); iterator.hasNext(); ) {
                 RubiksCube next = iterator.next();
-                if (visited.contains(next)) {
-                    iterator.remove();
+                if (visited2.containsKey(next)) {
+                    if (visited2.get(next) < heuristic(next)) {
+                        iterator.remove();
+                    }
+                    else {
+                        neighbors.add(next);
+                        visited2.replace(next, heuristic(next));
+                    }
+                } else {
+                    neighbors.add(next);
+                    visited2.put(next, heuristic(next));
                 }
             }
 
@@ -263,7 +289,8 @@ public class RubiksCube implements Comparable<RubiksCube> {
                 return null;
             }
             RubiksCube choose = neighbors.poll();
-            visited.add(choose);
+            visited2.put(choose, heuristic(choose));
+            //System.out.println(visited2.toString());
             cube = choose.cube; // Get best fringe node
             moves = choose.moves; // Get moves to that fringe node
         }
@@ -276,10 +303,24 @@ public class RubiksCube implements Comparable<RubiksCube> {
         return moves;
     }
 
+    @Override
     public int compareTo(RubiksCube c) {
         if (heuristic(this) > heuristic(c)) {
-            return 1;
+            return -1;
         } else if (heuristic(this) < heuristic(c)) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+}
+
+class RubiksComparator implements Comparator<RubiksCube> {
+
+    public int compare(RubiksCube a, RubiksCube b) {
+        if (a.heuristic(a) > b.heuristic(b)) {
+            return 1;
+        } else if (a.heuristic(a) < b.heuristic(b)) {
             return -1;
         } else {
             return 0;

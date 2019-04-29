@@ -138,7 +138,6 @@ public class RubiksCube implements Comparable<RubiksCube> {
                 sidesTo = new int[]{8, 11, 14, 15, 23, 20, 3, 2};
                 break;
             default:
-//                System.out.println(c);
                 assert false;
         }
         // if performing a counter-clockwise rotation, swap from and to
@@ -194,24 +193,6 @@ public class RubiksCube implements Comparable<RubiksCube> {
         return listTurns;
     }
 
-//    public boolean solvable(RubiksCube c) {
-//        int inversion = 0;
-//        int[] flat = new int[20];
-//        for (int i = 0; i < flat.length; i++) {
-//            flat[i] = c.getColor(i);
-//        }
-//
-//        for (int i = 0; i < flat.length; i++) {
-//            for (int j = i+1; j < flat.length; j++) {
-//                if (flat[i] > flat[j]) {
-//                    inversion = inversion + 1;
-//                }
-//            }
-//        }
-//
-//        return ((inversion % 2) == 0);
-//    }
-
     public int heuristic(RubiksCube c) {
         int color = 0;
         int sum = 0;
@@ -222,13 +203,9 @@ public class RubiksCube implements Comparable<RubiksCube> {
             }
             if (c.getColor(i) != color) { // If cubie color is not the color it should be
                 sum += 1;
-//                if ((c.getColor(i) == (color + 2)) || ((c.getColor(i) + 2) == color)) {
-//                    sum += 1;
-//                }
             }
         }
         sum = (sum / 8) + c.moves.size();
-//        System.out.println(color);
 
         return sum;
     }
@@ -249,20 +226,6 @@ public class RubiksCube implements Comparable<RubiksCube> {
 
     // return the list of rotations needed to solve a rubik's cube
     public List<Character> solve() {
-//        Comparator<RubiksCube> comparator = new Comparator<RubiksCube>() {
-//            @Override
-//            public int compare(RubiksCube cube1, RubiksCube cube2) {
-//                if (heuristic(cube1) > heuristic(cube2)) {
-//                    return 1;
-//                } else if (heuristic(cube1) < heuristic(cube2)) {
-//                    return -1;
-//                } else {
-//                    return 0;
-//                }
-//            }
-//        };
-
-//        HashSet<RubiksCube> visited = new HashSet<>();
         HashMap<RubiksCube, Integer> visited2 = new HashMap<>();
 
         PriorityQueue<RubiksCube> neighbors = new PriorityQueue<>(new RubiksComparator());
@@ -290,7 +253,6 @@ public class RubiksCube implements Comparable<RubiksCube> {
             }
             RubiksCube choose = neighbors.poll();
             visited2.put(choose, heuristic(choose));
-            //System.out.println(visited2.toString());
             cube = choose.cube; // Get best fringe node
             moves = choose.moves; // Get moves to that fringe node
         }

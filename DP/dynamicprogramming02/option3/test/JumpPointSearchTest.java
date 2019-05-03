@@ -3,37 +3,27 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-/**
- * Test for 8 Puzzle functionality
- */
+public class JumpPointSearchTest {
 
-
-public class JumpPointSearch {
-
-    private Board board;
+    private JumpPointSearch jps;
+    private State current;
+    private State goal;
 
     @BeforeEach
     public void setUp() throws Exception {
-        int[][] initState = {{1, 2, 3}, {4, 6, 0}, {7, 5, 8}};
-        board = new Board(initState);
+        jps = new JumpPointSearch();
+        current = new State(0,0);
+        goal = new State(9,9);
     }
 
     // Test board methods
 
     /**
-     * Test method for void manhattan().
+     * Test method for unsolved heuristic.
      */
     @Test
     public void testManhattan() {
-        assertEquals(board.manhattan(), 3);
-    }
-
-    /**
-     * Test method for boolean isGoal().
-     */
-    @Test
-    public void testGoal() {
-        assertEquals(board.isGoal(), false);
+        assertEquals(jps.heuristic(current, goal), 18);
     }
 
     // Test solver with several initial board states
@@ -44,14 +34,11 @@ public class JumpPointSearch {
     @Test
     public void testSolverUnsolvable() {
         // Unsolvable puzzle
-        int[][] initState = {{1, 0, 3}, {2, 4, 5}, {6, 7, 8}};
-        Board initial = new Board(initState);
-        Solver solver = new Solver(initial);
-        assertEquals(solver.isSolvable(), false);
-        solver = new Solver(new Board(new int[][]{{1, 8, 2},{0,4,3},{7,6,5}}));
-        assertEquals(solver.isSolvable(), true);
-        solver = new Solver(new Board(new int[][]{{8, 1, 2},{0,4,3},{7,6,5}}));
-        assertEquals(solver.isSolvable(), false);
+        for (int i = 0; i < jps.field.length; i++) {
+            jps.field[i][3].isObst = true;
+        }
+        jps.solve();
+        assertEquals(jps.goal.visited, false);
     }
 
     /**
@@ -59,79 +46,35 @@ public class JumpPointSearch {
      */
     @Test
     public void testSolverEasy() {
-        // Easy solve puzzle
-        int[][] initState = {{1, 2, 3}, {4, 5, 6}, {7, 0, 8}};
-        Board initial = new Board(initState);
-        Solver solver = new Solver(initial);
-        assertEquals(solver.isSolvable(), true);
-        // Create solution boards list
-        assertEquals(solver.minMoves, 1);
+        jps.field[5][5].isObst = true;
+        jps.solve();
+        assertEquals(jps.goal.visited, true);
+        assertEquals(jps.goal.moves.size(), 5);
     }
 
     @Test
     public void testSolverAverage() {
-        int[][] initState = {{0, 1, 3}, {4, 2, 5}, {7, 8, 6}};
-        Board initial = new Board(initState);
-        Solver solver = new Solver(initial);
-        assertEquals(solver.isSolvable(), true);
-        // Check number of moves
-        assertEquals(solver.minMoves, 4);
+        jps.field[6][5].isObst = true;
+        jps.field[5][5].isObst = true;
+        jps.field[4][5].isObst = true;
+        jps.solve();
+        assertEquals(jps.goal.visited, true);
+        assertEquals(jps.goal.moves.size(), 5);
     }
 
 
     @Test
     public void testSolverMedium() {
-        int[][] initState = {{2, 3, 6}, {1, 5, 0}, {4, 7, 8}};
-        Board initial = new Board(initState);
-        Solver solver = new Solver(initial);
-        assertEquals(solver.isSolvable(), true);
-        // Check number of moves
-        assertEquals(solver.minMoves, 7);
-    }
+        for (int i = 0; i < jps.field.length - 1; i++) {
+            jps.field[i][3].isObst = true;
+        }
 
-    @Test
-    public void testSolverHard() {
-        int[][] initState = {{0, 3, 5}, {2, 1, 8}, {4, 7, 6}};
-        Board initial = new Board(initState);
-        Solver solver = new Solver(initial);
-        assertEquals(solver.isSolvable(), true);
-        // Check number of moves
-        assertEquals(solver.minMoves, 12);
-    }
-
-    @Test
-    public void testSolverReallyHard() {
-        int[][] initState = {{3, 5, 6}, {1, 2, 8}, {0, 4, 7}};
-        Board initial = new Board(initState);
-        Solver solver = new Solver(initial);
-        assertEquals(solver.isSolvable(), true);
-        // Check number of moves
-        assertEquals(solver.minMoves, 16);
-    }
-
-
-    @Test
-    public void testSolverRidiculouslyHard() {
-        int[][] initState = {{3, 5, 2}, {6, 0, 1}, {7, 8, 4}};
-        Board initial = new Board(initState);
-        Solver solver = new Solver(initial);
-        assertEquals(solver.isSolvable(), true);
-        // Check number of moves
-        assertEquals(solver.minMoves, 22);
-    }
-
-    /**
-     * Test method for Solver - Hard puzzle
-     * Will take a long time to run
-     */
-    @Test
-    public void testSolverInsane() {
-        int[][] initState = {{8, 6, 7}, {2, 5, 4}, {3, 0, 1}};
-        Board initial = new Board(initState);
-        Solver solver = new Solver(initial);
-        assertEquals(solver.isSolvable(), true);
-        // Check number of moves
-        assertEquals(solver.minMoves, 31);
+        for (int i = 1; i < jps.field.length; i++) {
+            jps.field[i][5].isObst = true;
+        }
+        jps.solve();
+        assertEquals(jps.goal.visited, true);
+        assertEquals(jps.goal.moves.size(), 7);
     }
 
 }

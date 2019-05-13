@@ -6,14 +6,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class JumpPointSearchTest {
 
     private JumpPointSearch jps;
-    private State current;
-    private State goal;
+    private JumpPointSearch.State current;
+    private JumpPointSearch.State goal;
 
     @BeforeEach
     public void setUp() throws Exception {
         jps = new JumpPointSearch();
-        current = new State(0,0);
-        goal = new State(9,9);
+        current = jps.new State(0,0);
+        goal = jps.new State(9,9);
     }
 
     // Test board methods
@@ -23,7 +23,7 @@ public class JumpPointSearchTest {
      */
     @Test
     public void testManhattan() {
-        assertEquals(jps.heuristic(current, goal), 18);
+        assertEquals(18, jps.heuristic(current));
     }
 
     // Test solver with several initial board states
@@ -38,7 +38,7 @@ public class JumpPointSearchTest {
             jps.field[i][3].isObst = true;
         }
         jps.solve();
-        assertEquals(jps.goal.visited, false);
+        assertEquals(false, jps.goal.visited);
     }
 
     /**
@@ -49,7 +49,7 @@ public class JumpPointSearchTest {
         jps.field[5][5].isObst = true;
         jps.solve();
         assertEquals(jps.goal.visited, true);
-        assertEquals(jps.goal.moves.size(), 5);
+        assertEquals(5,jps.goal.moves.size());
     }
 
     @Test
@@ -59,7 +59,7 @@ public class JumpPointSearchTest {
         jps.field[4][5].isObst = true;
         jps.solve();
         assertEquals(jps.goal.visited, true);
-        assertEquals(jps.goal.moves.size(), 5);
+        assertEquals(5, jps.goal.moves.size());
     }
 
 
@@ -73,8 +73,8 @@ public class JumpPointSearchTest {
             jps.field[i][5].isObst = true;
         }
         jps.solve();
-        assertEquals(jps.goal.visited, true);
-        assertEquals(jps.goal.moves.size(), 7);
+        assertEquals( true, jps.goal.visited);
+        assertEquals(7, jps.goal.moves.size());
     }
 
 }

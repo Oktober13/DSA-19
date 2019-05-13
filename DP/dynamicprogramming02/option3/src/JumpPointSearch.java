@@ -32,6 +32,38 @@ public class JumpPointSearch {
         }
     }
 
+    public class State implements Comparable<State> {
+        int i;
+        int j;
+        int weight;
+        ArrayList<State> moves = new ArrayList<>();
+        Boolean visited = false;
+        Boolean isObst = false;
+
+        public State(int x, int y) {
+            i = x;
+            j = y;
+            weight = 0;
+        }
+
+        public State(int x, int y, int w) {
+            i = x;
+            j = y;
+            weight = w;
+        }
+
+        @Override
+        public int compareTo(State c) {
+            if (heuristic(this) > heuristic(c)) {
+                return -1;
+            } else if (heuristic(this) < heuristic(c)) {
+                return 1;
+            } else {
+                return 0;
+            }
+        }
+    }
+
     public boolean isSolved() {
         if ((goal.i == current.i) && (goal.j == current.j)) {
             goal.visited = true;
@@ -56,18 +88,6 @@ public class JumpPointSearch {
     public int heuristic(State current) {
         int manhattan = Math.abs(current.i - this.goal.i) + Math.abs(current.j - this.goal.j);
         return manhattan;
-    }
-
-    @Override
-    public int compareTo(State c) {
-        State tempGoal = new State(10,10); // TODO: This sucks, fix it
-        if (JumpPointSearch.heuristic(this) > JumpPointSearch.heuristic(c)) {
-            return -1;
-        } else if (JumpPointSearch.heuristic(this) < JumpPointSearch.heuristic(c)) {
-            return 1;
-        } else {
-            return 0;
-        }
     }
 
     public PriorityQueue<State> getNeighbors() {

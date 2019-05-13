@@ -41,8 +41,8 @@ public class JumpPointSearch {
     }
 
     private boolean onGrid(int i, int j) {
-        i = current.i + i;
-        j = current.j + j;
+//        i = current.i + i;
+//        j = current.j + j;
         if (i >= 0 && i < field.length && j >= 0 && j < field[0].length) {
             return true;
         }
@@ -53,22 +53,47 @@ public class JumpPointSearch {
      * Manhattan distance to goal. Should not overestimate.
      * TODO: Figure out how to integrate weighted field
      **/
-    public static int heuristic(State current, State goal) {
-        int manhattan = Math.abs(current.i - goal.i) + Math.abs(current.j - goal.j);
+    public int heuristic(State current) {
+        int manhattan = Math.abs(current.i - this.goal.i) + Math.abs(current.j - this.goal.j);
         return manhattan;
+    }
+
+    @Override
+    public int compareTo(State c) {
+        State tempGoal = new State(10,10); // TODO: This sucks, fix it
+        if (JumpPointSearch.heuristic(this) > JumpPointSearch.heuristic(c)) {
+            return -1;
+        } else if (JumpPointSearch.heuristic(this) < JumpPointSearch.heuristic(c)) {
+            return 1;
+        } else {
+            return 0;
+        }
     }
 
     public PriorityQueue<State> getNeighbors() {
         PriorityQueue<State> neighbors = new PriorityQueue<>();
 
-        for (int i = current.i; i < field.length; i++) { // Left jump
+        for (int i = current.i; i < field.length; i++) { // Right jump
             if (isSolved()) { break; }
             if (!onGrid(i,current.j)) {
                 break;
             }
             if (field[i][current.j].isObst) {
                 neighbors.add(field[i-1][current.j]);
+
+//                if (onGrid(i,current.j+1) && !field[i][current.j+1].isObst) { // Neighbor-adjacent (below) is clear
+//                    neighbors.add(field[i][current.j+1]);
+//                }
+//                if (onGrid(i,current.j-1) && !field[i][current.j-1].isObst) { // Neighbor-adjacent (above) is clear
+//                    neighbors.add(field[i][current.j-1]);
+//                }
                 break;
+            }
+            if (onGrid(i, current.j+1) && field[i][current.j+1].isObst && onGrid(i+1, current.j+1)) { // Forced neighbor
+                neighbors.add(field[i+1][current.j+1]);
+            }
+            if (onGrid(i, current.j-1) && field[i][current.j-1].isObst && onGrid(i-1, current.j-1)) { // Forced neighbor
+                neighbors.add(field[i-1][current.j-1]);
             }
         }
 
@@ -77,31 +102,70 @@ public class JumpPointSearch {
             if (!onGrid(current.i, j)) {
                 break;
             }
-            if (field[j][current.j].isObst) {
-                neighbors.add(field[j-1][current.j]);
+            if (field[current.i][j].isObst) {
+                neighbors.add(field[current.i][j-1]); // backtrack one j
+
+//                if (onGrid(current.i+1,j) && !field[current.i+1][j].isObst) { // Neighbor-adjacent (right) is clear
+//                    neighbors.add(field[current.i+1][j]);
+//                }
+//                if (onGrid(current.i-1,j) && !field[current.i-1][j].isObst) { // Neighbor-adjacent (left) is clear
+//                    neighbors.add(field[current.i-1][j]);
+//                }
                 break;
+            }
+            if (onGrid(current.i+1, j) && field[current.i+1][j].isObst && onGrid(current.i+1, j+1)) { // Forced neighbor
+                neighbors.add(field[current.i+1][j+1]);
+            }
+            if (onGrid(current.i-1, j) && field[current.i-1][j].isObst && onGrid(current.i-1, j-1)) { // Forced neighbor
+                neighbors.add(field[current.i-1][j-1]);
             }
         }
 
-        for (int i = current.i; i >= 0; i--) { // Right jump
+        for (int i = current.i; i >= 0; i--) { // Left jump
             if (isSolved()) { break; }
             if (!onGrid(i,current.j)) {
                 break;
             }
             if (field[i][current.j].isObst) {
                 neighbors.add(field[i+1][current.j]);
+
+//                if (onGrid(i,current.j+1) && !field[i][current.j+1].isObst) { // Neighbor-adjacent (below) is clear
+//                    neighbors.add(field[i][current.j+1]);
+//                }
+//                if (onGrid(i,current.j-1) && !field[i][current.j-1].isObst) { // Neighbor-adjacent (above) is clear
+//                    neighbors.add(field[i][current.j-1]);
+//                }
                 break;
+            }
+            if (onGrid(i, current.j+1) && field[i][current.j+1].isObst && onGrid(i+1, current.j+1)) { // Forced neighbor
+                neighbors.add(field[i+1][current.j+1]);
+            }
+            if (onGrid(i, current.j-1) && field[i][current.j-1].isObst  && onGrid(i-1, current.j-1)) { // Forced neighbor
+                neighbors.add(field[i-1][current.j-1]);
             }
         }
 
-        for (int j = current.j; j >= 0; j++) { // Up jump
+        for (int j = current.j; j >= 0; j--) { // Up jump
             if (isSolved()) { break; }
             if (!onGrid(current.i, j)) {
                 break;
             }
-            if (field[j][current.j].isObst) {
-                neighbors.add(field[j+1][current.j]);
+            if (field[current.i][j].isObst) {
+                neighbors.add(field[current.i][j+1]);
+
+//                if (onGrid(current.i+1,j) && !field[current.i+1][j].isObst) { // Neighbor-adjacent (right) is clear
+//                    neighbors.add(field[current.i+1][j]);
+//                }
+//                if (onGrid(current.i-1,j) && !field[current.i-1][j].isObst) { // Neighbor-adjacent (left) is clear
+//                    neighbors.add(field[current.i-1][j]);
+//                }
                 break;
+            }
+            if (onGrid(current.i+1, j) && field[current.i+1][j].isObst && onGrid(current.i+1, j+1)) { // Forced neighbor
+                neighbors.add(field[current.i+1][j+1]);
+            }
+            if (onGrid(current.i-1, j) && field[current.i-1][j].isObst && onGrid(current.i-1, j-1)) { // Forced neighbor
+                neighbors.add(field[current.i-1][j-1]);
             }
         }
 

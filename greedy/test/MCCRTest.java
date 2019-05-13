@@ -2,7 +2,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class MCCCTest {
+public class MCCRTest {
 
     @Test
     public void exampleCase() {
